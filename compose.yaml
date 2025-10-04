@@ -16,7 +16,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /etc/letsencrypt:/etc/letsencrypt:ro
     environment:
-      - ENABLE_RSPAMD=1
+      - ENABLE_RSPAMD=0
       - ENABLE_OPENDKIM=1
       - ENABLE_CLAMAV=1
       - ENABLE_FAIL2BAN=1
