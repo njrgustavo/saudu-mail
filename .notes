@@ -1,0 +1,9 @@
+dkim: d0as8d09as890g9bmn8bv8432cv34z2c
+
+Mailserver
+- Acesso local: http://saudu.com.br:8081/
+- Configuração no compose: `mailserver` usa SQLite (persistência em `./docker-data/dms/db/`) e está apontado para o IMAP/SMTP de `mail.saudu.com.br` (IMAP SSL `993`, SMTP STARTTLS `587`).
+
+
+docker exec -it mailserver setup email add administracao@saudu.com.br '3NiYdDVpjPj49du6kAZb'
+docker exec -it mailserver setup email add contato@saudu.com.br 'seGMxY1INFHTX2A3GtK0'

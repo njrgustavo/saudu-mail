@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   mailserver:
     image: ghcr.io/docker-mailserver/docker-mailserver:latest
@@ -26,6 +28,8 @@ services:
     cap_add:
       - NET_ADMIN
     restart: always
+    networks:
+      - mailnet
 
   roundcube:
     image: roundcube/roundcubemail:latest
@@ -34,15 +38,27 @@ services:
       - mailserver
     environment:
       - ROUNDCUBEMAIL_DB_TYPE=sqlite
-      - ROUNDCUBEMAIL_DEFAULT_HOST=ssl://mail.saudu.com.br
+      # Ajustado para usar o nome do serviço na rede interna
+      - ROUNDCUBEMAIL_DEFAULT_HOST=ssl://mailserver
       - ROUNDCUBEMAIL_DEFAULT_PORT=993
-      - ROUNDCUBEMAIL_SMTP_SERVER=tls://mail.saudu.com.br
+      # Ajustado para usar o nome do serviço na rede interna
+      - ROUNDCUBEMAIL_SMTP_SERVER=tls://mailserver
       - ROUNDCUBEMAIL_SMTP_PORT=587
       - ROUNDCUBEMAIL_USERNAME_DOMAIN=saudu.com.br
       - ROUNDCUBEMAIL_PLUGINS=archive,zipdownload
       - TZ=America/Sao_Paulo
+      # Adicionado para corrigir o erro de login (verificação SSL)
+      - ROUNDCUBEMAIL_IMAP_VERIFY_PEER=false
+      - ROUNDCUBEMAIL_SMTP_VERIFY_PEER=false
     volumes:
       - ./docker-data/roundcube/db/:/var/roundcube/db/
     ports:
       - "8081:80"
     restart: always
+    networks:
+      - mailnet
+
+# Seção adicionada para criar a rede interna
+networks:
+  mailnet:
+    driver: bridge
