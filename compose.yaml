@@ -7,6 +7,7 @@ services:
     hostname: mail.saudu.com.br
     ports:
       - "25:25"
+      - "143:143"  # Expondo a porta 143 para STARTTLS
       - "465:465"
       - "587:587"
       - "993:993"
@@ -40,18 +41,18 @@ services:
       - mailserver
     environment:
       - ROUNDCUBEMAIL_DB_TYPE=sqlite
-      # Apontar para o FQDN com IMAPS explícito
-      - ROUNDCUBEMAIL_DEFAULT_HOST=tls//mail.saudu.com.br
+      # CORRIGIDO: usa tls:// com dois pontos e a porta 143 (STARTTLS)
+      - ROUNDCUBEMAIL_DEFAULT_HOST=tls://mail.saudu.com.br
       - ROUNDCUBEMAIL_DEFAULT_PORT=143
-      # Apontar para o FQDN com certificado válido
+      # CORRETO: usa tls:// e a porta 587 (STARTTLS)
       - ROUNDCUBEMAIL_SMTP_SERVER=tls://mail.saudu.com.br
       - ROUNDCUBEMAIL_SMTP_PORT=587
       - ROUNDCUBEMAIL_USERNAME_DOMAIN=saudu.com.br
       - ROUNDCUBEMAIL_PLUGINS=archive,zipdownload
       - TZ=America/Sao_Paulo
-      # Adicionado para corrigir o erro de login (verificação SSL)
-      - ROUNDCUBEMAIL_IMAP_VERIFY_PEER=false
-      - ROUNDCUBEMAIL_SMTP_VERIFY_PEER=false
+      # REMOVIDO: Não precisamos mais desativar a segurança graças ao alias!
+      # - ROUNDCUBEMAIL_IMAP_VERIFY_PEER=false
+      # - ROUNDCUBEMAIL_SMTP_VERIFY_PEER=false
     volumes:
       - ./docker-data/roundcube/db/:/var/roundcube/db/
     ports:
@@ -60,7 +61,6 @@ services:
     networks:
       - mailnet
 
-# Seção adicionada para criar a rede interna
 networks:
   mailnet:
     driver: bridge
