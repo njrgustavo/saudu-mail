@@ -26,3 +26,23 @@ services:
     cap_add:
       - NET_ADMIN
     restart: always
+
+  roundcube:
+    image: roundcube/roundcubemail:latest
+    container_name: roundcube
+    depends_on:
+      - mailserver
+    environment:
+      - ROUNDCUBEMAIL_DB_TYPE=sqlite
+      - ROUNDCUBEMAIL_DEFAULT_HOST=ssl://mail.saudu.com.br
+      - ROUNDCUBEMAIL_DEFAULT_PORT=993
+      - ROUNDCUBEMAIL_SMTP_SERVER=tls://mail.saudu.com.br
+      - ROUNDCUBEMAIL_SMTP_PORT=587
+      - ROUNDCUBEMAIL_USERNAME_DOMAIN=saudu.com.br
+      - ROUNDCUBEMAIL_PLUGINS=archive,zipdownload
+      - TZ=America/Sao_Paulo
+    volumes:
+      - ./docker-data/roundcube/db/:/var/roundcube/db/
+    ports:
+      - "8081:80"
+    restart: always

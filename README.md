@@ -48,3 +48,16 @@ Observações
 - O caminho `./docker-data/dms/...` será criado automaticamente ao subir o serviço e mantém os dados persistentes.
 
 [0] Tutorial oficial com exemplo básico: https://docker-mailserver.github.io/docker-mailserver/latest/examples/tutorials/basic-installation/#a-basic-example-with-relevant-environmental-variables
+
+Roundcube Webmail
+- Acesso local: `http://<IP_da_VPS>:8081/`
+- Configuração no compose: `roundcube` usa SQLite (persistência em `./docker-data/roundcube/db/`) e está apontado para o IMAP/SMTP de `mail.saudu.com.br` (IMAP SSL `993`, SMTP STARTTLS `587`).
+- Login: use os usuários criados no mailserver (ex.: `contato@saudu.com.br`).
+- Produção com HTTPS:
+  - Crie `A` para `webmail.saudu.com.br` → IP da VPS.
+  - Opcional: configure Nginx/Apache como reverse proxy para encaminhar `webmail.saudu.com.br` → `http://127.0.0.1:8081/` e emita TLS com Let's Encrypt.
+  - Alternativamente, mapeie outra porta externa e use um proxy existente.
+
+Subir Roundcube
+- Após editar o compose: `docker compose up -d`
+- Logs: `docker logs roundcube --tail 200`
