@@ -40,8 +40,8 @@ services:
       - mailserver
     environment:
       - ROUNDCUBEMAIL_DB_TYPE=sqlite
-      # Apontar para o FQDN; usar porta 993 ativa IMAPS
-      - ROUNDCUBEMAIL_DEFAULT_HOST=mail.saudu.com.br
+      # Apontar para o FQDN com IMAPS explícito
+      - ROUNDCUBEMAIL_DEFAULT_HOST=ssl://mail.saudu.com.br
       - ROUNDCUBEMAIL_DEFAULT_PORT=993
       # Apontar para o FQDN com certificado válido
       - ROUNDCUBEMAIL_SMTP_SERVER=tls://mail.saudu.com.br
