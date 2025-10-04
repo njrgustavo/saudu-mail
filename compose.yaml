@@ -41,8 +41,8 @@ services:
     environment:
       - ROUNDCUBEMAIL_DB_TYPE=sqlite
       # Apontar para o FQDN com IMAPS explícito
-      - ROUNDCUBEMAIL_DEFAULT_HOST=ssl://mail.saudu.com.br
-      - ROUNDCUBEMAIL_DEFAULT_PORT=993
+      - ROUNDCUBEMAIL_DEFAULT_HOST=tls//mail.saudu.com.br
+      - ROUNDCUBEMAIL_DEFAULT_PORT=143
       # Apontar para o FQDN com certificado válido
       - ROUNDCUBEMAIL_SMTP_SERVER=tls://mail.saudu.com.br
       - ROUNDCUBEMAIL_SMTP_PORT=587
