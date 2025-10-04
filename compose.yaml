@@ -29,7 +29,9 @@ services:
       - NET_ADMIN
     restart: always
     networks:
-      - mailnet
+      mailnet:
+        aliases:
+          - mail.saudu.com.br
 
   roundcube:
     image: roundcube/roundcubemail:latest
@@ -38,11 +40,11 @@ services:
       - mailserver
     environment:
       - ROUNDCUBEMAIL_DB_TYPE=sqlite
-      # Ajustado para usar o nome do serviço na rede interna
-      - ROUNDCUBEMAIL_DEFAULT_HOST=ssl://mailserver
+      # Apontar para o FQDN com certificado válido
+      - ROUNDCUBEMAIL_DEFAULT_HOST=ssl://mail.saudu.com.br
       - ROUNDCUBEMAIL_DEFAULT_PORT=993
-      # Ajustado para usar o nome do serviço na rede interna
-      - ROUNDCUBEMAIL_SMTP_SERVER=tls://mailserver
+      # Apontar para o FQDN com certificado válido
+      - ROUNDCUBEMAIL_SMTP_SERVER=tls://mail.saudu.com.br
       - ROUNDCUBEMAIL_SMTP_PORT=587
       - ROUNDCUBEMAIL_USERNAME_DOMAIN=saudu.com.br
       - ROUNDCUBEMAIL_PLUGINS=archive,zipdownload
